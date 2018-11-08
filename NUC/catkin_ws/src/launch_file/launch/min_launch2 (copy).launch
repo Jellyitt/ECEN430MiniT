@@ -1,0 +1,41 @@
+<launch>
+	<machine name="modesttrianglenuc" address="modesttrianglenuc-desktop" timeout="10" env-loader="/opt/ros/kinetic/env.sh" user="modesttrianglenuc"/>
+	<machine name="modestLaptop" address="192.168.0.101" timeout="10" env-loader="/opt/ros/kinetic/env.sh" user="jonathan"/>
+
+	
+	<!-- launch Realsense -->
+	<include file="$(find realsense_camera)/launch/r200_nodelet_default.launch"/>
+
+
+	<!--Static Transform setup -->
+	<node machine="modesttrianglenuc" pkg="tf" type="static_transform_publisher" name="blink_baseframe_broad" args="0 0 0 0 0 0 /base_frame /base_link 100" />
+	<node machine="modesttrianglenuc" pkg="tf" type="static_transform_publisher" name="base_frame_2_camera_link" args="0.16 0 0.084 0 0 0 /base_link /camera_link 100"/>
+	<node machine="modesttrianglenuc" pkg="tf" type="static_transform_publisher" name="odom_baseframe_broad" args="0.08 0 0 0 0 0 /odom /base_frame 100" />
+	<node machine="modesttrianglenuc" pkg="tf" type="static_transform_publisher" name="base_link_2_laser" args="0.13 0.0 0.0 3.1416 3.1416 0 /base_link /laser 100" />
+	<!--node machine="modesttrianglenuc" pkg="tf" type="static_transform_publisher" name="laser_2_odom" args="0.21 0 0 0 0 0 /odom /laser 100" /-->
+
+	<!-- launch rosserial_python node -->
+	<node machine="modesttrianglenuc" name="serial" pkg="rosserial_python" type="serial_node.py" output="screen">
+		<param name="port" value="/dev/ttyACM1"/>
+		<param name="baud" value="57600"/>
+	</node>
+
+	<!-- launch Lidar -->
+  	<node machine="modesttrianglenuc" name="LIDAR" pkg="urg_node" type="urg_node">				
+		<param name="serial_port" value="/dev/ttyACM0"/>
+		<!--remap from="scan" to="base_scan"--> 
+	</node>
+
+	<!-- launch Robot Pose EKF node -->
+	<node machine="modesttrianglenuc" pkg="robot_pose_ekf" type="robot_pose_ekf" name="robot_pose_ekf">
+		<param name="output_frame" value="odom"/>
+		<param name="freq" value="30.0"/>
+		<param name="sensor_timeout" value="1.0"/>
+		<param name="odom_used" value="true"/>
+		<param name="imu_used" value="true"/>
+		<param name="vo_used" value="true"/>
+		<param name="debug" value="false"/>
+		<param name="self_diagnose" value="false"/>	
+	</node>
+
+</launch>

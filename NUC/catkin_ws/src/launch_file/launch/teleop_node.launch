@@ -1,0 +1,7 @@
+<launch> 
+
+	<machine name="Laptop" address="modestLaptop" env-loader="/opt/ros/kinetic/env.sh" password="makerobotwork" user="jonathan"/>
+
+	<node machine="Laptop" name="teleop" pkg="teleop_twist_keyboard" type="teleop_twist_keyboard.py" />
+
+</launch>
