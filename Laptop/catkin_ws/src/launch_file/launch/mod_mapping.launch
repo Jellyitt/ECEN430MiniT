@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+
+<!-- Main launch file for office bot SLAM
+ -->
+
+<launch>
+  <arg name="description_file" default="" doc="If provided, will publish the given urdf.xacro"/>
+  <node name="cartographer_node" pkg="cartographer_ros"
+      type="cartographer_node" args="
+          -configuration_directory $(find launch_file)/cfg
+          -configuration_basename office_bot.lua"
+      output="screen">
+  </node>
+</launch>
+

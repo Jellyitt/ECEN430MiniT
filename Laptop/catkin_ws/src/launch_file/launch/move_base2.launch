@@ -1,0 +1,20 @@
+<launch>
+
+<!--Run the map server-->
+<node name="map_server" pkg="map_server" type="map_server" args="$(find launch_file)/src/map/CO249_flipped.yaml"/>
+
+<!--Static transform setup-->
+<node pkg="tf" type="static_transform_publisher" name="map_2_base_link" args="-52 -55 0 0 0 0 /base_frame /map 100"/>
+
+<!--Move base and nav stack setup-->
+<node pkg="move_base" type="move_base" respawn="false" name="move_base_node" output="screen">
+  <remap from="cmd_vel" to="cmd_vel" />
+  <param name="use_sim_time" value="true"/>
+  <rosparam file="$(find launch_file)/src/nav/costmap_common_params.yaml" command="load" ns="global_costmap" />
+  <rosparam file="$(find launch_file)/src/nav/costmap_common_params.yaml" command="load" ns="local_costmap" />
+  <rosparam file="$(find launch_file)/src/nav/local_costmap_params.yaml" command="load" />
+  <rosparam file="$(find launch_file)/src/nav/global_costmap_params.yaml" command="load" />
+  <rosparam file="$(find launch_file)/src/nav/base_local_planner_params.yaml" command="load" />
+</node>
+
+</launch>

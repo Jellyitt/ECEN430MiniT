@@ -1,0 +1,15 @@
+<launch>
+	<machine name="modesttrianglenuc" address="modesttrianglenuc-desktop" timeout="10" env-loader="/opt/ros/kinetic/env.sh" user="modesttrianglenuc"/>
+	<machine name="modestLaptop" address="192.168.0.101" timeout="10" env-loader="/opt/ros/kinetic/env.sh" user="jonathan"/>
+
+	<node machine="modestLaptop" name="teleop" pkg="teleop_twist_keyboard" type="teleop_twist_keyboard.py"/>  
+	<node machine="modestLaptop" name="base_link" pkg="tf" type="static_transform_publisher" args="0 0 0 0 0 0 base_link camera 100" /> 
+
+
+	<node machine="modesttrianglenuc" name="serial" pkg="rosserial_python" type="serial_node.py">
+		<param name="port" value="/dev/ttyACM0"/>
+		<param name="baud" value="57600"/>
+	</node> 
+	
+
+</launch>
