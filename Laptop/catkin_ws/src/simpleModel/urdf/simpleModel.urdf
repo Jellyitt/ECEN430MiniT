@@ -1,0 +1,202 @@
+<robot
+  name="simpleModel">
+  <link
+    name="base_link">
+    <inertial>
+      <origin
+        xyz="0.12576783984691 0.157079279388995 0.253293013901622"
+        rpy="0 0 0" />
+      <mass
+        value="3.47488081535132" />
+      <inertia
+        ixx="0"
+        ixy="0"
+        ixz="0"
+        iyy="0"
+        iyz="0"
+        izz="0" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://simpleModel/meshes/base_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://simpleModel/meshes/base_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <link
+    name="left_wheel">
+    <inertial>
+      <origin
+        xyz="5.55111512312578E-17 -0.0590000000000001 -1.94289029309402E-16"
+        rpy="0 0 0" />
+      <mass
+        value="0.164669720530563" />
+      <inertia
+        ixx="0"
+        ixy="0"
+        ixz="0"
+        iyy="0"
+        iyz="0"
+        izz="0" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://simpleModel/meshes/left_wheel.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.1 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://simpleModel/meshes/left_wheel.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="left"
+    type="continuous">
+    <origin
+      xyz="-0.0455337877398974 -0.16958975480187 0.157079279388995"
+      rpy="-2.81885393441649E-15 4.32963728535954E-17 0.785398163397448" />
+    <parent
+      link="base_link" />
+    <child
+      link="left_wheel" />
+    <axis
+      xyz="0 -1 0" />
+  </joint>
+  <link
+    name="right_wheel">
+    <inertial>
+      <origin
+        xyz="0 -0.0311417692656913 -5.55111512312578E-17"
+        rpy="0 0 0" />
+      <mass
+        value="0.164669720530563" />
+      <inertia
+        ixx="0"
+        ixy="0"
+        ixz="0"
+        iyy="0"
+        iyz="0"
+        izz="0" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="1.57079632679 0 0" />
+      <geometry>
+        <mesh
+          filename="package://simpleModel/meshes/right_wheel.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.1 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://simpleModel/meshes/right_wheel.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="right"
+    type="continuous">
+    <origin
+      xyz="0.233329611117793 -0.233329611117793 0.157079279388995"
+      rpy="0.785398163397448 -1.5707963267949 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="right_wheel" />
+    <axis
+      xyz="0 0 1" />
+  </joint>
+  <link
+    name="rear_wheel">
+    <inertial>
+      <origin
+        xyz="-2.77555756156289E-17 0.0130000000000003 2.77555756156289E-17"
+        rpy="0 0 0" />
+      <mass
+        value="0.164669720530563" />
+      <inertia
+        ixx="0"
+        ixy="0"
+        ixz="0"
+        iyy="0"
+        iyz="0"
+        izz="0" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 -0.025 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://simpleModel/meshes/rear_wheel.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://simpleModel/meshes/rear_wheel.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="rear"
+    type="continuous">
+    <origin
+      xyz="0.125767839846911 -0.395318025852579 0.157079279388994"
+      rpy="0 -1.5707963267949 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="rear_wheel" />
+    <axis
+      xyz="0 1 0" />
+  </joint>
+</robot>
