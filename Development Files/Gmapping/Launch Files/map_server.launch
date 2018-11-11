@@ -1,0 +1,9 @@
+<launch>
+
+<!--Run the map server-->
+    <node name="map_server" pkg="map_server" type="map_server" args="$(find launch_file)/src/map/CO249_flipped.yaml"/>
+
+<!--Static transforms-->
+	<node pkg="tf" type="static_transform_publisher" name="map_to_base_link" args="50 50 0 0 0 0 /map /base_link 100" />
+
+</launch>

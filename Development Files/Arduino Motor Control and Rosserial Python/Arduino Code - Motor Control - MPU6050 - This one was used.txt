@@ -1,0 +1,170 @@
+#include <MPU6050_tockn.h>
+#include <elapsedMillis.h>
+#include <ros.h>
+#include <std_msgs/UInt16.h>
+#include <geometry_msgs/Twist.h>
+
+float max_x = 1.5;
+float max_y = 1.5;
+float max_Th = 5;
+
+volatile float linear_v_x, linear_v_y, linear_v_z;
+volatile float angular_v_x, angular_v_y, angular_v_z;
+
+unsigned long publish_interval = 20; //ms
+
+
+ros::NodeHandle nh;
+MPU6050 mpu6050(Wire); //create mpu instance using wire lib
+
+elapsedMillis timeElapsed;
+elapsedMillis timePublish;
+
+
+//motor 1 -- Err(LOW) = forward motion/counter-clockwise
+#define PWM1 6 //Port A, pin 31
+#define En1 8 //Port A, pin 23
+#define Err1 3 //Port A, pin 25
+
+//motor 2 -- Err(HIGH) = forward motion/clockwise
+#define PWM2 10 //Port A, pin 29
+#define En2 7 //Port A, pin 19
+#define Err2 5 //Port A, pin 21
+
+//motor 3 -- Err(HIGH) = clockwise motion
+#define PWM3 9 //Port A, pin 27
+#define En3 4 //Port A, pin 15
+#define Err3 2 //Port A, pin 17
+
+void messageCb(const geometry_msgs::Twist& val){
+  float val_x = val.linear.x;
+  float val_y = val.linear.y;
+  float val_Th = val.angular.z;
+//  int speed_x, speed_y, speed_Th;
+  if(val_x == 0 && val_y == 0 && val_Th == 0){
+    digitalWrite(En1, LOW);
+    digitalWrite(En2, LOW);
+    digitalWrite(En3, LOW);
+  }
+  else{
+    int x = calcX(val_x);
+    int y = calcY(val_y);
+    int Th = calcTh(val_Th);
+//    if(Th > 0){
+//    speed_x = (-1*x)/2 - Th;
+//    speed_y = x/2 - Th;
+//    }
+//    else{
+    int speed_x = (-1*x) - Th;
+    int speed_y = x - Th;
+//}
+    int speed_Th = (-1*Th);
+    set_dir(sign(speed_x), sign(speed_y), sign(speed_Th));
+    drive_motors(min(abs(0.9*speed_x), 229), min(abs(0.9*speed_y), 229), min(0.9*abs(speed_Th), 229));
+  }
+}
+
+ros::Subscriber<geometry_msgs::Twist> sub("/cmd_vel", &messageCb );
+geometry_msgs::Twist imu_msg;
+ros::Publisher imu_data("imu_data", &imu_msg);
+
+
+
+void setup() {
+  TCCR1B = TCCR1B & B11111000 | B00000010; // for PWM frequency of 3921.16 Hz  -> pins 9 + 10
+  TCCR2B = TCCR2B & B11111000 | B00000010; // for PWM frequency of 3921.16 Hz  -> pin 11
+ 
+  pinMode(PWM3, OUTPUT);
+  pinMode(En3, OUTPUT);
+  pinMode(Err3, OUTPUT);
+  pinMode(PWM2, OUTPUT);
+  pinMode(En2, OUTPUT);
+  pinMode(Err2, OUTPUT);
+  pinMode(PWM1, OUTPUT);
+  pinMode(En1, OUTPUT);
+  pinMode(Err1, OUTPUT);
+
+  mpu6050.begin();
+  mpu6050.calcGyroOffsets(true);
+  
+
+  nh.initNode();
+  nh.subscribe(sub);
+  nh.advertise(imu_data);
+
+}
+
+void loop(){
+  nh.spinOnce();
+ 
+  if (timePublish >= publish_interval){
+    imu_update();
+    timePublish= 0;
+  }
+
+}
+
+void imu_update(){
+  mpu6050.update();
+
+  // Update local variables 
+  linear_v_x +=  mpu6050.getAccX()*(timeElapsed/1000.00);
+  linear_v_y += mpu6050.getAccY()*(timeElapsed/1000.00);
+  linear_v_z = mpu6050.getAccZ()*(timeElapsed/1000.00);
+  angular_v_x = getGyroAngleX();
+  angular_v_y = getGyroAngleX();
+  angular_v_z = getGyroAngleX();
+  timeElapsed = 0; //restart timer
+
+  // update geometry msg
+  imu_msg.linear.x= linear_v_x;
+  imu_msg.linear.y= linear_v_y;
+  imu_msg.linear.z= linear_v_z;
+  imu_msg.angular.x= angular_v_x;
+  imu_msg.angular.y= angular_v_y;
+  imu_msg.angular.z= angular_v_z;
+
+  imu_data.publish(&imu_msg);
+  
+}
+
+
+
+int calcX(float i){
+  float speedFrac = i/max_x;
+  return (int)(speedFrac*250);
+}
+
+int calcY(float i){
+  float speedFrac = i/max_y;
+  return (int)(speedFrac*250);
+}
+
+int calcTh(float i){
+  float speedFrac = i/max_Th;
+  return (int)(speedFrac*250);
+}
+
+int sign(float i){
+  if(i < 0){
+    return LOW;
+  }
+  else{
+    return HIGH;
+  }
+}
+
+void set_dir(int sgn1, int sgn2, int sgn3){
+  digitalWrite(Err1, sgn1);
+  digitalWrite(Err2, sgn2);
+  digitalWrite(Err3, sgn3);
+}
+
+void drive_motors(int pwm_1, int pwm_2, int pwm_3){
+  digitalWrite(En1, HIGH);
+  digitalWrite(En2, HIGH);
+  digitalWrite(En3, HIGH);
+  analogWrite(PWM1, pwm_1);
+  analogWrite(PWM2, pwm_2);
+  analogWrite(PWM3, pwm_3);
+}
