@@ -1,0 +1,9 @@
+<launch>
+	<machine name="modesttrianglenuc" address="modesttrianglenuc-desktop" timeout="10"  user="modesttrianglenuc"/>
+	<machine name="modestLaptop" address="192.168.0.101" timeout="10" env-loader="/opt/ros/kinetic/env.sh" user="jonathan"/>
+
+
+
+	<node machine="modestLaptop" name="rviz" pkg="rviz" type="rviz" required="true" />
+</launch>
+	
