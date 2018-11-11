@@ -1,0 +1,202 @@
+<robot
+  name="Whole Assembly">
+  <link
+    name="base_link">
+    <inertial>
+      <origin
+        xyz="0.0638554476046769 0.154475820116881 0.222501327939939"
+        rpy="0 0 0" />
+      <mass
+        value="1.29592946821914" />
+      <inertia
+        ixx="0.00568023707434862"
+        ixy="0.000808118972210758"
+        ixz="-0.00144339416429348"
+        iyy="0.0116850361537454"
+        iyz="0.000480770398514847"
+        izz="0.00735454491294569" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Whole Assembly/meshes/base_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Whole Assembly/meshes/base_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <link
+    name="left_wheel">
+    <inertial>
+      <origin
+        xyz="-6.04154980204941E-06 6.20803409043247E-06 -0.0362458993719677"
+        rpy="0 0 0" />
+      <mass
+        value="0.0995468684529498" />
+      <inertia
+        ixx="4.20625938308922E-05"
+        ixy="1.35251448692862E-08"
+        ixz="-7.15122019200012E-09"
+        iyy="4.20428681773424E-05"
+        iyz="3.57738215015573E-08"
+        izz="1.12114291630535E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Whole Assembly/meshes/left_wheel.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Whole Assembly/meshes/left_wheel.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="left wheel"
+    type="fixed">
+    <origin
+      xyz="0.017195 -0.27041 0.14034"
+      rpy="1.5708 -8.3973E-15 2.0944" />
+    <parent
+      link="base_link" />
+    <child
+      link="left_wheel" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <link
+    name="right_wheel">
+    <inertial>
+      <origin
+        xyz="2.57022985142297E-06 -5.74121017320184E-06 -0.0257131909431065"
+        rpy="0 0 0" />
+      <mass
+        value="0.099488750293331" />
+      <inertia
+        ixx="4.20261580780586E-05"
+        ixy="6.09357730967834E-12"
+        ixz="9.84568961653912E-09"
+        iyy="4.20261519967804E-05"
+        iyz="-1.69812520895341E-08"
+        izz="1.11779569543743E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Whole Assembly/meshes/right_wheel.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Whole Assembly/meshes/right_wheel.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="right wheel"
+    type="fixed">
+    <origin
+      xyz="0.081346 -0.097344 0.14033"
+      rpy="1.5708 0.47063 -3.1416" />
+    <parent
+      link="base_link" />
+    <child
+      link="right_wheel" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <link
+    name="back_wheel">
+    <inertial>
+      <origin
+        xyz="3.05127464295119E-07 -6.13884576960988E-06 -0.0366979928121696"
+        rpy="0 0 0" />
+      <mass
+        value="0.10184441592474" />
+      <inertia
+        ixx="4.35449117522311E-05"
+        ixy="-8.30713187677746E-13"
+        ixz="1.06249080903332E-09"
+        iyy="4.35448994543233E-05"
+        iyz="1.9884396777327E-08"
+        izz="1.22507718788548E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Whole Assembly/meshes/back_wheel.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Whole Assembly/meshes/back_wheel.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="back wheel"
+    type="fixed">
+    <origin
+      xyz="0.145497469714244 -0.2704086452264 0.140355505866654"
+      rpy="-1.5707963267949 5.30270106022979E-17 1.04719755119651" />
+    <parent
+      link="base_link" />
+    <child
+      link="back_wheel" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+</robot>
